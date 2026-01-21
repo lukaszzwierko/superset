@@ -794,6 +794,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
       i: number,
     ): ColumnWithLooseAccessor<D> & {
       columnKey: string;
+      label: string;
     } => {
       const {
         key,
@@ -884,6 +885,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
         // typing is incorrect in current version of `@types/react-table`
         // so we ask TS not to check.
         columnKey: key,
+        label: displayLabel,
         accessor: ((datum: D) => datum[key]) as never,
         Cell: ({ value, row }: { value: DataRecordValue; row: Row<D> }) => {
           const [isHtml, text] = formatColumnValue(column, value);
@@ -1199,12 +1201,13 @@ export default function TableChart<D extends DataRecord = DataRecord>(
       {
         columnKey: string;
         sortType?: string;
+        label?: string;
       }[]
     )
       .filter(col => col?.sortType === 'alphanumeric')
       .map(column => ({
         value: column.columnKey,
-        label: column.columnKey,
+        label: column.label || column.columnKey,
       }));
 
     if (!isEqual(options, searchOptions)) {
