@@ -108,6 +108,7 @@ export interface ChartPropsConfig {
   legendIndex?: number;
   inContextMenu?: boolean;
   emitCrossFilters?: boolean;
+  sliceName?: string;
 }
 
 const DEFAULT_WIDTH = 800;
@@ -160,6 +161,8 @@ export default class ChartProps<FormData extends RawFormData = RawFormData> {
 
   theme: SupersetTheme;
 
+  sliceName?: string;
+
   constructor(
     config: ChartPropsConfig & { formData?: FormData } = {
       theme: supersetTheme,
@@ -186,6 +189,7 @@ export default class ChartProps<FormData extends RawFormData = RawFormData> {
       inContextMenu = false,
       emitCrossFilters = false,
       theme,
+      sliceName,
     } = config;
     this.width = width;
     this.height = height;
@@ -209,6 +213,7 @@ export default class ChartProps<FormData extends RawFormData = RawFormData> {
     this.inContextMenu = inContextMenu;
     this.emitCrossFilters = emitCrossFilters;
     this.theme = theme;
+    this.sliceName = sliceName;
   }
 }
 
@@ -235,6 +240,7 @@ ChartProps.createSelector = function create(): ChartPropsSelector {
     input => input.inContextMenu,
     input => input.emitCrossFilters,
     input => input.theme,
+    input => input.sliceName,
     (
       annotationData,
       datasource,
@@ -256,6 +262,7 @@ ChartProps.createSelector = function create(): ChartPropsSelector {
       inContextMenu,
       emitCrossFilters,
       theme,
+      sliceName,
     ) =>
       new ChartProps({
         annotationData,
@@ -278,6 +285,7 @@ ChartProps.createSelector = function create(): ChartPropsSelector {
         inContextMenu,
         emitCrossFilters,
         theme,
+        sliceName: sliceName,
       }),
     // Below config is to retain usage of 1-sized `lruMemoize` object in Reselect v4
     // Reselect v5 introduces `weakMapMemoize` which is more performant but potentially memory-leaky

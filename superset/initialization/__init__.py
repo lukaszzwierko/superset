@@ -293,7 +293,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         appbuilder.add_view(
             DashboardModelView,
             "Dashboards",
-            label=_("Dashboards"),
+            label="Pulpity",
             icon="fa-dashboard",
             category="",
             category_icon="",
@@ -301,7 +301,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         appbuilder.add_view(
             SliceModelView,
             "Charts",
-            label=_("Charts"),
+            label="Wykresy",
             icon="fa-bar-chart",
             category="",
             category_icon="",
@@ -309,7 +309,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
 
         appbuilder.add_link(
             "Datasets",
-            label=_("Datasets"),
+            label="Zbiory danych",
             href=f"{app_root}/tablemodelview/list/",
             icon="fa-table",
             category="",
@@ -426,7 +426,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         )
         appbuilder.add_link(
             "Saved Queries",
-            label=_("Saved Queries"),
+            label="Zapytania zapisane",
             href=f"{app_root}/savedqueryview/list/",
             icon="fa-save",
             category="SQL Lab",
@@ -434,7 +434,7 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         )
         appbuilder.add_link(
             "Query Search",
-            label=_("Query History"),
+            label="Historia zapytań",
             href=f"{app_root}/sqllab/history/",
             icon="fa-search",
             category_icon="fa-flask",

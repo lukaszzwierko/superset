@@ -54,7 +54,7 @@ services:
     container_name: superset_nginx
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8041:80"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -180,7 +180,7 @@ services:
       # configuring the dev-server to use the host.docker.internal to connect to the backend
       superset: "http://superset:8088"
     ports:
-      - "127.0.0.1:9000:9000"  # exposing the dynamic webpack dev server
+      - "127.0.0.1:10000:9000"  # exposing the dynamic webpack dev server
     container_name: superset_node
     command: ["/app/docker/docker-frontend.sh"]
     env_file:

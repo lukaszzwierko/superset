@@ -337,6 +337,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
     hasServerPageLengthChanged,
     serverPageLength,
     slice_id,
+    sliceName
   } = props;
 
   const comparisonColumns = useMemo(
@@ -438,21 +439,21 @@ export default function TableChart<D extends DataRecord = DataRecord>(
               groupBy.length === 0
                 ? []
                 : groupBy.map(col => {
-                    const val = ensureIsArray(updatedFilters?.[col]);
-                    if (!val.length)
-                      return {
-                        col,
-                        op: 'IS NULL' as const,
-                      };
+                  const val = ensureIsArray(updatedFilters?.[col]);
+                  if (!val.length)
                     return {
                       col,
-                      op: 'IN' as const,
-                      val: val.map(el =>
-                        el instanceof Date ? el.getTime() : el!,
-                      ),
-                      grain: col === DTTM_ALIAS ? timeGrain : undefined,
+                      op: 'IS NULL' as const,
                     };
-                  }),
+                  return {
+                    col,
+                    op: 'IN' as const,
+                    val: val.map(el =>
+                      el instanceof Date ? el.getTime() : el!,
+                    ),
+                    grain: col === DTTM_ALIAS ? timeGrain : undefined,
+                  };
+                }),
           },
           filterState: {
             label: labelElements.join(', '),
@@ -559,15 +560,15 @@ export default function TableChart<D extends DataRecord = DataRecord>(
           drillBy: cellPoint.isMetric
             ? undefined
             : {
-                filters: [
-                  {
-                    col: cellPoint.key,
-                    op: '==',
-                    val: extractTextFromHTML(cellPoint.value),
-                  },
-                ],
-                groupbyFieldName: 'groupby',
-              },
+              filters: [
+                {
+                  col: cellPoint.key,
+                  op: '==',
+                  val: extractTextFromHTML(cellPoint.value),
+                },
+              ],
+              groupbyFieldName: 'groupby',
+            },
         });
       };
     }
@@ -719,7 +720,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
       const firstColumnInGroup = filteredColumnsMeta[startPosition];
       const originalLabel = firstColumnInGroup
         ? columnsMeta.find(col => col.key === firstColumnInGroup.key)
-            ?.originalLabel || key
+          ?.originalLabel || key
         : key;
 
       // Add placeholder <th> for columns before this header
@@ -927,6 +928,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
                 : '';
           }
           const StyledCell = styled.td`
+            width: ${columnWidth ? (columnWidth + 'px') : 'auto'};
             color: ${theme.colorText};
             text-align: ${sharedStyle.textAlign};
             white-space: ${value instanceof Date ? 'nowrap' : undefined};
@@ -946,26 +948,26 @@ export default function TableChart<D extends DataRecord = DataRecord>(
             typeof value === 'number' &&
             `
                 width: ${`${cellWidth({
-                  value: value as number,
-                  valueRange,
-                  alignPositiveNegative,
-                })}%`};
+              value: value as number,
+              valueRange,
+              alignPositiveNegative,
+            })}%`};
                 left: ${`${cellOffset({
-                  value: value as number,
-                  valueRange,
-                  alignPositiveNegative,
-                })}%`};
+              value: value as number,
+              valueRange,
+              alignPositiveNegative,
+            })}%`};
                 background-color: ${cellBackground({
-                  value: value as number,
-                  colorPositiveNegative,
-                  theme,
-                })};
+              value: value as number,
+              colorPositiveNegative,
+              theme,
+            })};
               `}
           `;
 
           let arrowStyles = css`
             color: ${basicColorFormatters &&
-            basicColorFormatters[row.index][originKey]?.arrowColor ===
+              basicColorFormatters[row.index][originKey]?.arrowColor ===
               ColorSchemeEnum.Green
               ? theme.colorSuccess
               : theme.colorError};
@@ -993,11 +995,11 @@ export default function TableChart<D extends DataRecord = DataRecord>(
             onClick:
               emitCrossFilters && !valueRange && !isMetric
                 ? () => {
-                    // allow selecting text in a cell
-                    if (!getSelectedText()) {
-                      toggleFilter(key, value);
-                    }
+                  // allow selecting text in a cell
+                  if (!getSelectedText()) {
+                    toggleFilter(key, value);
                   }
+                }
                 : undefined,
             onContextMenu: (e: MouseEvent) => {
               if (handleContextMenu) {
@@ -1014,7 +1016,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
             className: [
               className,
               value == null ||
-              (value instanceof DateWithFormatter && value.input == null)
+                (value instanceof DateWithFormatter && value.input == null)
                 ? 'dt-is-null'
                 : '',
               isActiveFilterValue(key, value) ? ' dt-is-active-filter' : '',
@@ -1099,7 +1101,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
             tabIndex={0}
           >
             {/* can't use `columnWidth &&` because it may also be zero */}
-            {config.columnWidth ? (
+            {/*config.columnWidth ? (
               // column width hint
               <div
                 style={{
@@ -1107,7 +1109,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
                   height: 0.01,
                 }}
               />
-            ) : null}
+            ) : null*/}
             <div
               data-column-name={col.id}
               css={{
@@ -1194,10 +1196,10 @@ export default function TableChart<D extends DataRecord = DataRecord>(
   useEffect(() => {
     const options = (
       columns as unknown as ColumnWithLooseAccessor &
-        {
-          columnKey: string;
-          sortType?: string;
-        }[]
+      {
+        columnKey: string;
+        sortType?: string;
+      }[]
     )
       .filter(col => col?.sortType === 'alphanumeric')
       .map(column => ({
@@ -1345,6 +1347,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
         manualSearch={serverPagination}
         onSearchChange={debouncedSearch}
         searchOptions={searchOptions}
+        sliceName={sliceName}
       />
     </Styles>
   );

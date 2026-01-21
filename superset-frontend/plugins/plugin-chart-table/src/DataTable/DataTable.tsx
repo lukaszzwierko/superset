@@ -42,7 +42,7 @@ import {
 } from 'react-table';
 import { matchSorter, rankings } from 'match-sorter';
 import { isEqual } from 'lodash';
-import { Flex, Space } from '@superset-ui/core/components';
+import { Button, Flex, Space } from '@superset-ui/core/components';
 import GlobalFilter, { GlobalFilterProps } from './components/GlobalFilter';
 import SelectPageSize, {
   SelectPageSizeProps,
@@ -54,6 +54,7 @@ import { PAGE_SIZE_OPTIONS } from '../consts';
 import { sortAlphanumericCaseInsensitive } from './utils/sortAlphanumericCaseInsensitive';
 import { SearchOption, SortByItem } from '../types';
 import SearchSelectDropdown from './components/SearchSelectDropdown';
+import * as printModule from '../print';
 
 export interface DataTableProps<D extends object> extends TableOptions<D> {
   tableClassName?: string;
@@ -130,6 +131,7 @@ export default typedMemo(function DataTable<D extends object>({
   searchInputId,
   onSearchColChange,
   searchOptions,
+  sliceName,
   ...moreUseTableOptions
 }: DataTableProps<D>): JSX.Element {
   const tableHooks: PluginHook<D>[] = [
@@ -424,6 +426,10 @@ export default typedMemo(function DataTable<D extends object>({
       onServerPaginationChange(pageNumber, serverPageSize);
   }
 
+  const printTable = () => {
+    printModule.printTable(sliceName, headerGroups, page, data as any[], prepareRow);
+  }
+
   return (
     <div
       ref={wrapperRef}
@@ -452,6 +458,7 @@ export default typedMemo(function DataTable<D extends object>({
               />
             ) : null}
             <Flex wrap align="center" gap="middle">
+              {sliceName && <Button onClick={() => printTable()}>Print</Button>}
               {serverPagination && (
                 <Space size="small" className="search-select-container">
                   <span className="search-by-label">Search by:</span>

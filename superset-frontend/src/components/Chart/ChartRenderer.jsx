@@ -383,6 +383,7 @@ class ChartRenderer extends Component {
             legendState={this.state.legendState}
             enableNoResults={bypassNoResult}
             legendIndex={this.state.legendIndex}
+            sliceName={this.props.sliceName}
             {...drillToDetailProps}
           />
         </div>

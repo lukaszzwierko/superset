@@ -41,6 +41,13 @@ if (process.env.WEBPACK_MODE === 'development') {
   setHotLoaderConfig({ logLevel: 'debug', trackTailUpdates: false });
 }
 
+// Basing on url query params add CSS to body
+if (document.location.search.includes('sprintbot')) {
+  console.log('Sprintbot mode enabled');
+  document.body.classList.add('sprintbot');
+}
+
+
 // Grab initial bootstrap data
 const bootstrapData = getBootstrapData();
 

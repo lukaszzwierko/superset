@@ -470,6 +470,7 @@ const transformProps = (
     },
     emitCrossFilters,
     theme,
+    sliceName,
   } = chartProps;
 
   const formData = merge(
@@ -756,6 +757,7 @@ const transformProps = (
     hasServerPageLengthChanged,
     serverPageLength,
     slice_id,
+    sliceName
   };
 };
 

@@ -84,9 +84,9 @@ const fractionDigits: ControlFormItemSpec<'Slider'> = {
 
 const columnWidth: ControlFormItemSpec<'InputNumber'> = {
   controlType: 'InputNumber',
-  label: t('Min Width'),
+  label: t('Width'),
   description: t(
-    "Default minimal column width in pixels, actual width may still be larger than this if other columns don't need much space",
+    "Default column width in pixels, actual width may still be larger than this if other columns don't need much space",
   ),
   width: 120,
   placeholder: t('auto'),

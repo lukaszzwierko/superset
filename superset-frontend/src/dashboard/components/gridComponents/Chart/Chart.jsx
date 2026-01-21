@@ -542,6 +542,7 @@ const Chart = props => {
           datasetsStatus={datasetsStatus}
           isInView={props.isInView}
           emitCrossFilters={emitCrossFilters}
+          sliceName={props.sliceName}
         />
       </ChartWrapper>
     </SliceContainer>

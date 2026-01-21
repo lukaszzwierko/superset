@@ -80,6 +80,7 @@ export interface ChartProps {
   datasetsStatus?: 'loading' | 'error' | 'complete';
   isInView?: boolean;
   emitCrossFilters?: boolean;
+  sliceName?: string;
 }
 
 export type Actions = {

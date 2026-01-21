@@ -98,6 +98,8 @@ export type Props = Omit<SuperChartCoreProps, 'chartProps'> &
      * Determines is the context menu related to the chart is open
      */
     inContextMenu?: boolean;
+    /** chart name */
+    sliceName?: string;
   };
 
 type PropsWithDefault = Props & Readonly<typeof defaultProps>;
@@ -175,6 +177,7 @@ class SuperChart extends PureComponent<Props, {}> {
       enableNoResults,
       noResults,
       theme,
+      sliceName,
       ...rest
     } = this.props as PropsWithDefault;
 
@@ -184,6 +187,7 @@ class SuperChart extends PureComponent<Props, {}> {
       height,
       width,
       theme,
+      sliceName: this.props.sliceName,
     });
 
     let chart;
@@ -218,6 +222,7 @@ class SuperChart extends PureComponent<Props, {}> {
           postTransformProps={postTransformProps}
           onRenderSuccess={onRenderSuccess}
           onRenderFailure={onRenderFailure}
+          sliceName={this.props.sliceName}
         />
       );
       chart = Wrapper ? (
